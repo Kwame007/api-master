@@ -1,3 +1,4 @@
+
 # API Master - Angular Pagination Component
 
 A reusable pagination component for Angular applications with modern UI design and full accessibility support.

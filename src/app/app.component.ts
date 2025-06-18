@@ -10,5 +10,5 @@ import { PostListComponent } from './components/post-list/post-list.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'API Master - Pagination Demo';
+  title = 'API Master - Pagination Demo'
 }
