@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Post } from '../models/post.interface';
 import { catchError, Observable } from 'rxjs';
 import { ErrorHandlerService } from './error-handler.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,12 @@ import { ErrorHandlerService } from './error-handler.service';
 export class ApiClientService {
 
   constructor() { }
-  private url = 'https://jsonplaceholder.typicode.com';
+  private url = environment.apiUrl;
   private http = inject(HttpClient);
   private errorHandler = inject(ErrorHandlerService);
 
   GET():Observable<Post[]>{
-    return this.http.get<Post[]>(`${this.url}/post`)
+    return this.http.get<Post[]>(`${this.url}/posts`)
       .pipe(
         this.errorHandler.retryStrategy(3, 1000),
         catchError(this.errorHandler.handleError<Post[]>)
