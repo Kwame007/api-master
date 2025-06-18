@@ -1,0 +1,35 @@
+<div class="pagination-container" *ngIf="totalPages > 1">
+  <nav class="pagination-nav">
+    <ul class="pagination-list">
+      <!-- Previous Page Button -->
+      <li class="pagination-item">
+        <button 
+          class="pagination-button prev-page" 
+          [disabled]="currentPage <= 1"
+          (click)="onPreviousPage()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+      </li>
+
+      <!-- Page Numbers -->
+      <li class="pagination-item" *ngFor="let page of pages">
+        <button 
+          class="pagination-button page-number" 
+          [class.active]="page === currentPage"
+          (click)="onPageChange(page)">
+          {{ page }}
+        </button>
+      </li>
+
+      <!-- Next Page Button -->
+      <li class="pagination-item">
+        <button 
+          class="pagination-button next-page" 
+          [disabled]="currentPage >= totalPages"
+          (click)="onNextPage()">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
