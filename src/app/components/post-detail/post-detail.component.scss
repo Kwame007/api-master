@@ -1,0 +1,90 @@
+.post-detail-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font-family: inherit;
+}
+
+.loading {
+  text-align: center;
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.error {
+  text-align: center;
+  color: #dc2626;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.post-card {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.post-card h2 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+}
+
+.post-card p {
+  color: #374151;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.meta {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.comments-section {
+  margin-top: 2rem;
+}
+
+.comments-section h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #2563eb;
+}
+
+.comments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.comment-email {
+  color: #3b82f6;
+  font-size: 0.95rem;
+}
+
+.comment-body {
+  color: #374151;
+  font-size: 1rem;
+} 

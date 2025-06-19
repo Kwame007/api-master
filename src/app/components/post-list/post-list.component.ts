@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { Post } from '../../models/post.interface';
 import { ApiClientService } from '../../services/api-client.service';
 import { PaginationComponent } from '../pagination/pagination.component';
@@ -8,7 +9,7 @@ import { PaginatedResponse } from '../../models/params.interface';
 @Component({
   selector: 'app-post-list',
   standalone: true,
-  imports: [CommonModule, PaginationComponent],
+  imports: [CommonModule, PaginationComponent, RouterModule],
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss']
 })
@@ -22,7 +23,12 @@ export class PostListComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = 10;
 
-  constructor(private apiService: ApiClientService) {}
+
+  constructor(
+    private apiService: ApiClientService,
+    private router: Router,
+
+  ) {}
 
   ngOnInit(): void {
     this.loadPosts();
@@ -54,5 +60,9 @@ export class PostListComponent implements OnInit {
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadPosts();
+  }
+
+  createPost(): void {
+    this.router.navigate(['/create']);
   }
 }
