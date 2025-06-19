@@ -33,7 +33,7 @@
   <!-- Posts List -->
   @if(!loading && !error){
     <div class="posts-grid">
-      @for(post of posts; track post.id){
+      @for(post of posts$ | async; track post.id){
         <div class="post-link" (click)="viewPost(post.id!)">
           <div class="post-card">
             <div class="post-header">
@@ -43,6 +43,10 @@
             <p class="post-body">{{ post.body }}</p>
             <div class="post-footer">
               <span class="user-id">User ID: {{ post.userId }}</span>
+              @if(isLoggedIn){
+                <button class="edit-btn" (click)="editPost(post.id!); $event.stopPropagation()">Edit</button>
+                <button class="delete-btn" (click)="deletePost(post.id!); $event.stopPropagation()">Delete</button>
+              }
             </div>
           </div>
         </div>

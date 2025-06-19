@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Post } from '../../models/post.interface';
@@ -6,6 +6,7 @@ import { ApiClientService } from '../../services/api-client.service';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { PaginatedResponse } from '../../models/params.interface';
 import { AuthenticationService } from '../../services/authentication.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-post-list',
@@ -15,7 +16,7 @@ import { AuthenticationService } from '../../services/authentication.service';
   styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent implements OnInit {
-  posts: Post[] = [];
+  posts$ = new BehaviorSubject<Post[]>([]);
   loading = false;
   error: string | null = null;
   
@@ -52,7 +53,7 @@ export class PostListComponent implements OnInit {
       limit: this.itemsPerPage
     }).subscribe({
       next: (response: PaginatedResponse<Post>) => {
-        this.posts = response.data;
+        this.posts$.next(response.data);
         this.totalItems = response.pagination.totalItems;
         this.currentPage = response.pagination.currentPage;
         this.itemsPerPage = response.pagination.itemsPerPage;
@@ -77,5 +78,25 @@ export class PostListComponent implements OnInit {
 
   viewPost(postId: number): void {
     this.router.navigate(['/post', postId]);
+  }
+
+  editPost(postId: number): void {
+    this.router.navigate(['/edit', postId]);
+  }
+
+  deletePost(postId: number): void {
+    if (confirm('Are you sure you want to delete this post?')) {
+      this.apiService.DELETE(postId).subscribe({
+        next: () => {
+          // Remove the deleted post from the BehaviorSubject
+          const updatedPosts = this.posts$.value.filter(post => post.id !== postId);
+          this.posts$.next(updatedPosts);
+        },
+        error: (error) => {
+          alert('Failed to delete post.');
+          console.error('Delete error:', error);
+        }
+      });
+    }
   }
 }
