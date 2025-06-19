@@ -13,6 +13,7 @@
       }
     </div>
   </div>
+  }
 
   <!-- Loading State -->
   @if(loading){
@@ -23,10 +24,12 @@
   }
 
   <!-- Error State -->
-  <!-- <div class="error-container" *ngIf="error && !loading">
+  @if (error && !loading) {
+  <div class="error-container">
     <p class="error-message">{{ error }}</p>
     <button class="retry-button" (click)="loadPosts()">Try Again</button>
-  </div> -->
+  </div>
+  }
 
   <!-- Posts List -->
   @if(!loading && !error){
