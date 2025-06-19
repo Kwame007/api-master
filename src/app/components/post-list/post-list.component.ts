@@ -4,6 +4,7 @@ import { Post } from '../../models/post.interface';
 import { ApiClientService } from '../../services/api-client.service';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { PaginatedResponse } from '../../models/params.interface';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-post-list',
@@ -22,10 +23,23 @@ export class PostListComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = 10;
 
-  constructor(private apiService: ApiClientService) {}
+  constructor(private apiService: ApiClientService, public authService: AuthenticationService) {}
 
   ngOnInit(): void {
     this.loadPosts();
+  }
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  login(): void {
+    // Use static test user credentials
+    this.authService.login('testuser', 'testpass');
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
   loadPosts(): void {

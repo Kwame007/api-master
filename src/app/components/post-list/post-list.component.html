@@ -1,11 +1,26 @@
 <div class="post-list-container">
-  <h2>Posts</h2>
-  
-  <!-- Loading State -->
-  <div class="loading-container" *ngIf="loading">
-    <div class="loading-spinner"></div>
-    <p>Loading posts...</p>
+  <div class="post-list-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <h2>Posts</h2>
+    <div style="display: flex; align-items: center;">
+      @if(!isLoggedIn){
+        <button (click)="login()" class="login-btn">Login</button>
+      }
+      @if(isLoggedIn){
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button (click)="logout()" class="logout-btn">Logout</button>
+          <button class="create-btn">Create</button>
+        </div>
+      }
+    </div>
   </div>
+
+  <!-- Loading State -->
+  @if(loading){
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Loading posts...</p>
+    </div>
+  }
 
   <!-- Error State -->
   <!-- <div class="error-container" *ngIf="error && !loading">
@@ -14,22 +29,22 @@
   </div> -->
 
   <!-- Posts List -->
-   @if(!loading && !error){
+  @if(!loading && !error){
     <div class="posts-container">
-     @for(post of posts; track post.id){
-       <div class="post-card">
-        <div class="post-header">
-          <h3 class="post-title">{{ post.title }}</h3>
-          <span class="post-id">#{{ post.id }}</span>
+      @for(post of posts; track post.id){
+        <div class="post-card">
+          <div class="post-header">
+            <h3 class="post-title">{{ post.title }}</h3>
+            <span class="post-id">#{{ post.id }}</span>
+          </div>
+          <p class="post-body">{{ post.body }}</p>
+          <div class="post-footer">
+            <span class="user-id">User ID: {{ post.userId }}</span>
+          </div>
         </div>
-        <p class="post-body">{{ post.body }}</p>
-        <div class="post-footer">
-          <span class="user-id">User ID: {{ post.userId }}</span>
-        </div>
-      </div>
-     }
+      }
     </div>
-}
+  }
 
   <!-- Pagination -->
   <app-pagination
