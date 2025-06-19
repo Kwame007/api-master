@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ApiClientService } from '../../services/api-client.service';
-import { Post } from '../../models/post.interface';
+import { Post, Comment } from '../../models/post.interface';
 import { HttpClient } from '@angular/common/http';
 
 
