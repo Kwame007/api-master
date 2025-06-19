@@ -24,7 +24,7 @@ export class PostListComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = 10;
 
-  constructor(private apiService: ApiClientService, public authService: AuthenticationService) {}
+  constructor(private apiService: ApiClientService, public authService: AuthenticationService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadPosts();
@@ -73,5 +73,9 @@ export class PostListComponent implements OnInit {
 
   createPost(): void {
     this.router.navigate(['/create']);
+  }
+
+  viewPost(postId: number): void {
+    this.router.navigate(['/post', postId]);
   }
 }

@@ -8,7 +8,7 @@
       @if(isLoggedIn){
         <div style="display: flex; align-items: center; gap: 1rem;">
           <button (click)="logout()" class="logout-btn">Logout</button>
-          <button class="create-btn">Create</button>
+          <button class="create-btn" (click)="createPost()">Create</button>
         </div>
       }
     </div>
@@ -32,16 +32,18 @@
 
   <!-- Posts List -->
   @if(!loading && !error){
-    <div class="posts-container">
+    <div class="posts-grid">
       @for(post of posts; track post.id){
-        <div class="post-card">
-          <div class="post-header">
-            <h3 class="post-title">{{ post.title }}</h3>
-            <span class="post-id">#{{ post.id }}</span>
-          </div>
-          <p class="post-body">{{ post.body }}</p>
-          <div class="post-footer">
-            <span class="user-id">User ID: {{ post.userId }}</span>
+        <div class="post-link" (click)="viewPost(post.id!)">
+          <div class="post-card">
+            <div class="post-header">
+              <h3 class="post-title">{{ post.title }}</h3>
+              <span class="post-id">#{{ post.id }}</span>
+            </div>
+            <p class="post-body">{{ post.body }}</p>
+            <div class="post-footer">
+              <span class="user-id">User ID: {{ post.userId }}</span>
+            </div>
           </div>
         </div>
       }
