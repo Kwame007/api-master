@@ -1,8 +1,9 @@
 <form [formGroup]="postForm" (ngSubmit)="onSubmit()" action="" class="form-wrapper">
     
     <div class="form-header">
-        <h3>Create Post</h3>
-        <p>Lets create a new article that is capable of transforming or making impact</p>
+        <h3>{{ isEditMode ? 'Edit Post' : 'Create Post' }}</h3>
+        <p *ngIf="!isEditMode">Lets create a new article that is capable of transforming or making impact</p>
+        <p *ngIf="isEditMode">Update your post below.</p>
     </div>
 
     @if (error) {
@@ -42,9 +43,9 @@
     <div class="action-container">
         <button type="submit" class="publish" [disabled]="loading">
             @if (loading) {
-            Creating...
+            {{ isEditMode ? 'Updating...' : 'Creating...' }}
             } @else {
-            Publish
+            {{ isEditMode ? 'Update' : 'Publish' }}
             }
         </button>
         <button type="button" (click)="goBack()" [disabled]="loading">Go back</button>

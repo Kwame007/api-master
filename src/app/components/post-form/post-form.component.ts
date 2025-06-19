@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from '../../models/post.interface';
 import { ApiClientService } from '../../services/api-client.service';
 
@@ -15,18 +15,42 @@ export class PostFormComponent implements OnInit {
   postForm!: FormGroup;
   loading = false;
   error: string | null = null;
+  isEditMode = false;
+  postId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private apiService: ApiClientService,
     private router: Router,
-
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.postForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
       body: ['', [Validators.required, Validators.minLength(20)]],
+    });
+
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.isEditMode = true;
+        this.postId = +id;
+        this.loading = true;
+        this.apiService.GET(this.postId).subscribe({
+          next: (post) => {
+            this.postForm.patchValue({
+              title: post.title,
+              body: post.body
+            });
+            this.loading = false;
+          },
+          error: (error) => {
+            this.error = 'Failed to load post.';
+            this.loading = false;
+          }
+        });
+      }
     });
   }
 
@@ -42,27 +66,35 @@ export class PostFormComponent implements OnInit {
     if (this.postForm.valid) {
       this.loading = true;
       this.error = null;
-
       const postData = {
         title: this.postForm.value.title,
         body: this.postForm.value.body,
-        userId: 1 // Default user ID for demo
+        userId: 1,
+        id: this.postId || undefined
       };
-
-      this.apiService.POST(postData).subscribe({
-        next: (response) => {
-          this.loading = false;
-          console.log('Post created successfully:', response);
-          
-          // Navigate back to the list
-          this.router.navigate(['/']);
-        },
-        error: (error) => {
-          this.loading = false;
-          this.error = 'Failed to create post. Please try again.';
-          console.error('Error creating post:', error);
-        }
-      });
+      if (this.isEditMode && this.postId) {
+        this.apiService.PUT({ ...postData, id: this.postId }).subscribe({
+          next: (response) => {
+            this.loading = false;
+            this.router.navigate(['/']);
+          },
+          error: (error) => {
+            this.loading = false;
+            this.error = 'Failed to update post. Please try again.';
+          }
+        });
+      } else {
+        this.apiService.POST(postData).subscribe({
+          next: (response) => {
+            this.loading = false;
+            this.router.navigate(['/']);
+          },
+          error: (error) => {
+            this.loading = false;
+            this.error = 'Failed to create post. Please try again.';
+          }
+        });
+      }
     } else {
       this.postForm.markAllAsTouched();
     }

@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Post } from '../../models/post.interface';
 import { ApiClientService } from '../../services/api-client.service';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { PaginatedResponse } from '../../models/params.interface';
 import { AuthenticationService } from '../../services/authentication.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription, filter } from 'rxjs';
 
 @Component({
   selector: 'app-post-list',
@@ -15,7 +15,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss']
 })
-export class PostListComponent implements OnInit {
+export class PostListComponent implements OnInit, OnDestroy {
   posts$ = new BehaviorSubject<Post[]>([]);
   loading = false;
   error: string | null = null;
@@ -25,10 +25,22 @@ export class PostListComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = 10;
 
+  private routerSub?: Subscription;
+
   constructor(private apiService: ApiClientService, public authService: AuthenticationService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadPosts();
+    // Listen for navigation events to reload posts when returning to this route
+    this.routerSub = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.loadPosts();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
   }
 
   get isLoggedIn(): boolean {
