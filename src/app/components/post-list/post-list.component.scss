@@ -150,14 +150,13 @@ h2 {
   transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
   cursor: pointer;
   min-height: 260px;
-}
 
+}
 .post-link:hover .post-card {
   box-shadow: 0 6px 24px rgba(99,102,241,0.08);
   border-color: #6366f1;
   transform: translateY(-2px) scale(1.01);
 }
-
 .post-user-row {
   display: flex;
   align-items: center;
@@ -285,18 +284,12 @@ h2 {
   }
 }
 
-// Responsive design
-@media (max-width: 768px) {
-  .post-list-container {
-    padding: 1rem;
-  }
-  
-  h2 {
-    font-size: 1.5rem;
-  }
-  
- 
-  
+// Responsive
+@media (max-width: 900px) {
+  .posts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }  
   .post-header {
     flex-direction: column;
     gap: 0.5rem;
