@@ -1,15 +1,25 @@
 <div class="post-list-container">
-  <div class="header-section">
+  <div class="post-list-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
     <h2>Posts</h2>
-    <button class="create-post-btn" (click)="createPost()">Create Post</button>
+    <div style="display: flex; align-items: center;">
+      @if(!isLoggedIn){
+        <button (click)="login()" class="login-btn">Login</button>
+      }
+      @if(isLoggedIn){
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button (click)="logout()" class="logout-btn">Logout</button>
+          <button class="create-btn">Create</button>
+        </div>
+      }
+    </div>
   </div>
-  
+
   <!-- Loading State -->
-  @if (loading) {
-  <div class="loading-container">
-    <div class="loading-spinner"></div>
-    <p>Loading posts...</p>
-  </div>
+  @if(loading){
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Loading posts...</p>
+    </div>
   }
 
   <!-- Error State -->
@@ -21,34 +31,21 @@
   }
 
   <!-- Posts List -->
-  @if (!loading && !error) {
-  <div class="posts-grid">
-    @for (post of posts; track post.id) {
-    <a [routerLink]="['/post', post.id]" class="post-link">
-      <div class="post-card">
-        <div class="post-user-row">
-          <div class="avatar">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="16" r="16" fill="#E0E7FF"/>
-              <path d="M16 17.333c2.577 0 4.667-2.09 4.667-4.666C20.667 10.09 18.577 8 16 8s-4.667 2.09-4.667 4.667c0 2.576 2.09 4.666 4.667 4.666Zm0 2.334c-3.11 0-9.333 1.56-9.333 4.666V26h18.666v-1.667c0-3.106-6.223-4.666-9.333-4.666Z" fill="#6366F1"/>
-            </svg>
+  @if(!loading && !error){
+    <div class="posts-container">
+      @for(post of posts; track post.id){
+        <div class="post-card">
+          <div class="post-header">
+            <h3 class="post-title">{{ post.title }}</h3>
+            <span class="post-id">#{{ post.id }}</span>
           </div>
-          <span class="user-label">User {{ post.userId }}</span>
-          <span class="dot-separator">•</span>
-          <span class="post-id-label">#{{ post.id }}</span>
+          <p class="post-body">{{ post.body }}</p>
+          <div class="post-footer">
+            <span class="user-id">User ID: {{ post.userId }}</span>
+          </div>
         </div>
-        <div class="post-title" title="{{ post.title }}">{{ post.title }}</div>
-        <div class="post-body" title="{{ post.body }}">{{ post.body }}</div>
-        <div class="post-meta-row">
-          <span class="clock-icon">
-            <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#F3F4F6"/><path d="M8 4.667v3.333l2 2" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <span class="meta-time">Just now</span>
-        </div>
-      </div>
-    </a>
-    }
-  </div>
+      }
+    </div>
   }
 
   <!-- Pagination -->
