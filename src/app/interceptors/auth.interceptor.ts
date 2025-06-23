@@ -5,23 +5,6 @@ import { tap } from 'rxjs/operators';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authenticationService = inject(AuthenticationService);
-  const token = authenticationService.getToken();
-
-  const newReq = req.clone({
-        setHeaders: { Authorization: `Bearer ${token}` },
-      });
-
-  console.log('HTTP Request:', newReq);
-
-  return next(newReq).pipe(
-    tap(
-      event => console.log('HTTP Response:', event),
-      error => console.error('HTTP Error:', error)
-    )
-  );
-};
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
