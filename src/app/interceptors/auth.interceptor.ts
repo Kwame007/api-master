@@ -17,8 +17,8 @@ export class AuthInterceptor implements HttpInterceptor {
     });
     return next.handle(newReq).pipe(
       tap(
-        event => {},
-        error => {}
+        event => {console.log('checked')},
+        error => {console.log('err')}
       )
     );
   }
